@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -12,8 +13,38 @@ int getFileNames(vector<string> &files);
 int main(){
     vector<string> files;
     getFileNames(files);
+    string line;
     for(std::vector<string>::iterator i=files.begin();i!=files.end();i++){
         cout << *i << endl;
+        ifstream myfile (*i);
+        vector<char> queue;
+        if(myfile.is_open()){
+            /*
+            while(getline(myfile,line)){
+                cout << line << endl;
+            }
+            */
+            char ch;
+            while (!myfile.eof() ) {
+
+                myfile.get(ch);
+                if(ch<123&&ch>64){
+                    if (queue.size() < 6) {
+                        queue.push_back(ch);
+                    } else {
+                        queue.erase(queue.begin());
+                        queue.push_back(ch);
+                    }
+                }
+                for (std::vector<char>::const_iterator i = queue.begin(); i != queue.end(); ++i) {
+                    std::cout << *i << ' ';
+                }
+                cout << endl;
+            }
+            cout << "--------------------------------------------------------" << endl;
+            myfile.close();
+        }
+
     }
     return 0;
 }
