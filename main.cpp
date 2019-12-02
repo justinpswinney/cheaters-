@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 
@@ -13,42 +14,50 @@ int getFileNames(vector<string> &files);
 int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
-    string line;
+
     int numChars=atoi(argv[2]);
     string path=argv[1];
-    
+    string place;
     for(std::vector<string>::iterator i=files.begin();i!=files.end();i++){
         cout << *i << endl;
-        ifstream myfile (*i);
-        vector<char> queue;
-        if(myfile.is_open()){
-            /*
-            while(getline(myfile,line)){
-                cout << line << endl;
-            }
-            */
-            char ch;
-            while (!myfile.eof() ) {
-                myfile.get(ch);
-                if(ch<123&&ch>64){
-                    if (queue.size() < numChars) {
-                        queue.push_back(ch);
-                    } else {
-                        for (std::vector<char>::const_iterator i = queue.begin(); i != queue.end(); ++i) {
-                            std::cout << *i << ' ';
+        place=path+"/"+*i;
+        cout << place << endl;
+        if((*i!=".")&&(*i!="..")) {
+            ifstream myfile(place.c_str());
+            vector<char> queue;
+            if (myfile.is_open()) {
+                /*
+                while(getline(myfile,line)){
+                    cout << line << endl;
+                }
+                */
+                char ch;
+                while (!myfile.eof()) {
+                    myfile.get(ch);
+                    if (ch < 123 && ch > 64) {
+                        if (queue.size() < numChars) {
+                            queue.push_back(ch);
+                        } else {
+                            for (std::vector<char>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
+                                std::cout << *j << ' ';
+                            }
+                            cout << endl;
+                            // Currently reads before push, last queue of file isnt outputted
+                            queue.erase(queue.begin());
+                            queue.push_back(ch);
                         }
-                        cout << endl;
-                        // Currently reads before push, last queue of file isnt outputted
-                        queue.erase(queue.begin());
-                        queue.push_back(ch);
+
                     }
 
+
                 }
-
-
+                cout << "--------------------------------------------------------" << endl;
+                myfile.close();
+            } else {
+                cout << "UNABLE TO OPEN FILE" << endl;
             }
-            cout << "--------------------------------------------------------" << endl;
-            myfile.close();
+        }else{
+            cout << "INVALID FILE NAME" << endl;
         }
 
     }
