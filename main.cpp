@@ -10,10 +10,13 @@ using namespace std;
 
 int getFileNames(vector<string> &files);
 
-int main(){
+int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
     string line;
+    int numChars=atoi(argv[2]);
+    string path=argv[1];
+    
     for(std::vector<string>::iterator i=files.begin();i!=files.end();i++){
         cout << *i << endl;
         ifstream myfile (*i);
@@ -26,20 +29,23 @@ int main(){
             */
             char ch;
             while (!myfile.eof() ) {
-
                 myfile.get(ch);
                 if(ch<123&&ch>64){
-                    if (queue.size() < 6) {
+                    if (queue.size() < numChars) {
                         queue.push_back(ch);
                     } else {
+                        for (std::vector<char>::const_iterator i = queue.begin(); i != queue.end(); ++i) {
+                            std::cout << *i << ' ';
+                        }
+                        cout << endl;
+                        // Currently reads before push, last queue of file isnt outputted
                         queue.erase(queue.begin());
                         queue.push_back(ch);
                     }
+
                 }
-                for (std::vector<char>::const_iterator i = queue.begin(); i != queue.end(); ++i) {
-                    std::cout << *i << ' ';
-                }
-                cout << endl;
+
+
             }
             cout << "--------------------------------------------------------" << endl;
             myfile.close();
