@@ -6,17 +6,25 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include "cheaters.h"
+
 
 using namespace std;
 
 int getFileNames(vector<string> &files);
 
+int key(vector<char> chunk, int threshold);
+
 int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
-
+    HashTable table;
+    table.add("Justin",0);
+    table.add("Justan",0);
+    
     int numChars=atoi(argv[2]);
     string path=argv[1];
+    int threshold=atoi(argv[3]);
     string place;
     for(std::vector<string>::iterator i=files.begin();i!=files.end();i++){
         cout << *i << endl;
@@ -26,11 +34,6 @@ int main(int argc, char* argv[]){
             ifstream myfile(place.c_str());
             vector<char> queue;
             if (myfile.is_open()) {
-                /*
-                while(getline(myfile,line)){
-                    cout << line << endl;
-                }
-                */
                 char ch;
                 while (!myfile.eof()) {
                     myfile.get(ch);
@@ -38,18 +41,17 @@ int main(int argc, char* argv[]){
                         if (queue.size() < numChars) {
                             queue.push_back(ch);
                         } else {
+                            key(queue,threshold);
                             for (std::vector<char>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
                                 std::cout << *j << ' ';
                             }
                             cout << endl;
-                            // Currently reads before push, last queue of file isnt outputted
+                            // Currently reads before push, last queue of file isn't outputted
                             queue.erase(queue.begin());
                             queue.push_back(ch);
+
                         }
-
                     }
-
-
                 }
                 cout << "--------------------------------------------------------" << endl;
                 myfile.close();
@@ -94,4 +96,12 @@ int getFileNames(vector<string> &files)
         cout << i << files[i] << endl;
     }
     return 0;
+}
+
+int key(vector<char> chunk, int threshold){
+    int result=0;
+    for(std::vector<char>::iterator k=chunk.begin();k!=chunk.end();k++){
+        result+=*k;
+    }
+    return result;
 }
