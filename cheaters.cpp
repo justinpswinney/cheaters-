@@ -13,7 +13,7 @@ using namespace std;
 
 int getFileNames(vector<string> &files);
 
-int key(vector<char> chunk, int threshold);
+int key(vector<string> chunk, int threshold);
 
 int main(int argc, char* argv[]){
     vector<string> files;
@@ -21,8 +21,8 @@ int main(int argc, char* argv[]){
     HashTable table;
     table.add("Justin",0);
     table.add("Justan",0);
-    
-    int numChars=atoi(argv[2]);
+
+    int numWords=atoi(argv[2]);
     string path=argv[1];
     int threshold=atoi(argv[3]);
     string place;
@@ -32,32 +32,40 @@ int main(int argc, char* argv[]){
         cout << place << endl;
         if((*i!=".")&&(*i!="..")) {
             ifstream myfile(place.c_str());
-            vector<char> queue;
+            vector<string> queue;
             if (myfile.is_open()) {
                 char ch;
+                string word;
                 while (!myfile.eof()) {
+                    word.clear();
                     myfile.get(ch);
-                    if (ch < 123 && ch > 64) {
-                        if (queue.size() < numChars) {
-                            queue.push_back(ch);
-                        } else {
-                            key(queue,threshold);
-                            for (std::vector<char>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
-                                std::cout << *j << ' ';
-                            }
-                            cout << endl;
-                            // Currently reads before push, last queue of file isn't outputted
-                            queue.erase(queue.begin());
-                            queue.push_back(ch);
+                    while ((ch < 123) && (ch > 64) && (ch != ' ' ) ) {
+                        word += ch;
+                        myfile.get(ch);
+                    }
 
+                    if (queue.size() < numWords) {
+                        queue.push_back(word);
+                    } else if(word!="") {
+                        key(queue, threshold);
+                        for (std::vector<string>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
+                            cout << *j ;
                         }
+                        cout << endl;
+                        // Currently reads before push, last queue of file isn't outputted til outside brackets
+                        queue.erase(queue.begin());
+                        queue.push_back(word);
                     }
                 }
-                cout << "--------------------------------------------------------" << endl;
+                for (std::vector<string>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
+                    cout << *j ;
+                }
+                cout << endl << "-----------------------------------------------------------------------------------------" << endl;
                 myfile.close();
-            } else {
+            }else {
                 cout << "UNABLE TO OPEN FILE" << endl;
             }
+
         }else{
             cout << "INVALID FILE NAME" << endl;
         }
@@ -98,10 +106,7 @@ int getFileNames(vector<string> &files)
     return 0;
 }
 
-int key(vector<char> chunk, int threshold){
-    int result=0;
-    for(std::vector<char>::iterator k=chunk.begin();k!=chunk.end();k++){
-        result+=*k;
-    }
-    return result;
+int key(vector<string> chunk, int threshold){
+
+    return 0;
 }
