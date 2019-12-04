@@ -7,55 +7,24 @@
 
 using namespace std;
 
-class HashNode{
-private:
-    int index;
-    HashNode * next;
-public:
-    HashNode(){
-        next=NULL;
-        index=-1;
-    }
-    HashNode(int index){
-        this->index=index;
-        next=NULL;
-    }
 
-    HashNode *getNext() const{
-        return this->next;
-    }
-    void setNext(HashNode * nextNode){
-        HashNode *trail=NULL;
-        HashNode *current=this;
-        while(current!=NULL){
-            trail=current;
-            current=current->next;
-        }
-        trail->next=nextNode;
-    }
-};
 
 class HashTable{
 private:
-    HashNode **table;
+    vector<int> *table;
 public:
     HashTable(){
-        table= new HashNode*[1000]();
+        table= new vector<int>[1000]();
     }
     void add(int index, int key){
-        HashNode *last=NULL;
-        HashNode *current=table[key];
-        while(current!=NULL) {
-            last = current;
-            current = current->getNext();
-        }
-        if(current==NULL){
-            current= new HashNode(index);
-            if(last==NULL){
-                table[key]=current;
-            }else{
-                last->setNext(current);
+        bool notFound=true;
+        for(std::vector<int>::iterator i= table[key].begin();i!=table[key].end();i++){
+            if(*i==index){
+                notFound=false;
             }
+        }
+        if(notFound==true){
+            table[key].push_back(index);
         }
     }
 };
