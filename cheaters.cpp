@@ -13,15 +13,15 @@ using namespace std;
 
 int getFileNames(vector<string> &files);
 
-int key(vector<string> chunk, int threshold);
+int key(vector<string> chunk, int tableSize);
 
 int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
     HashTable table;
-    table.add("Justin",0);
-    table.add("Justan",0);
-
+    table.add(0,0);
+    table.add(0,0);
+    const int tableSize=1000;
     int numWords=atoi(argv[2]);
     string path=argv[1];
     int threshold=atoi(argv[3]);
@@ -47,10 +47,14 @@ int main(int argc, char* argv[]){
                     if (queue.size() < numWords) {
                         queue.push_back(word);
                     } else if(word!="") {
-                        key(queue, threshold);
+                        int k=key(queue, tableSize);
+                        string chunk;
                         for (std::vector<string>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
                             cout << *j ;
+                            chunk+=*j;
                         }
+                        int index=distance(files.begin(),i);
+                        table.add(index,k);
                         cout << endl;
                         // Currently reads before push, last queue of file isn't outputted til outside brackets
                         queue.erase(queue.begin());
@@ -106,7 +110,14 @@ int getFileNames(vector<string> &files)
     return 0;
 }
 
-int key(vector<string> chunk, int threshold){
-
-    return 0;
+int key(vector<string> chunk, int tableSize){
+    string characters;
+    for(std::vector<string>:: iterator i=chunk.begin();i!=chunk.end();i++){
+        characters+=*i;
+    }
+    long int key=0;
+    for(int long i=0;i<characters.size();i++){
+       key+=(characters[i]);
+    }
+    return key%tableSize;
 }

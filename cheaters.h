@@ -9,15 +9,15 @@ using namespace std;
 
 class HashNode{
 private:
-    string name;
+    int index;
     HashNode * next;
 public:
     HashNode(){
         next=NULL;
-        name="0";
+        index=-1;
     }
-    HashNode(string writer){
-        name=writer;
+    HashNode(int index){
+        this->index=index;
         next=NULL;
     }
 
@@ -40,9 +40,9 @@ private:
     HashNode **table;
 public:
     HashTable(){
-        table= new HashNode*[100]();
+        table= new HashNode*[1000]();
     }
-    void add(string name, int key){
+    void add(int index, int key){
         HashNode *last=NULL;
         HashNode *current=table[key];
         while(current!=NULL) {
@@ -50,7 +50,7 @@ public:
             current = current->getNext();
         }
         if(current==NULL){
-            current= new HashNode(name);
+            current= new HashNode(index);
             if(last==NULL){
                 table[key]=current;
             }else{
