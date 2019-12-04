@@ -7,6 +7,8 @@
 #include <fstream>
 #include <cstdlib>
 #include "cheaters.h"
+#include <functional>
+
 
 
 using namespace std;
@@ -19,9 +21,7 @@ int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
     HashTable table;
-    table.add(0,0);
-    table.add(0,0);
-    const int tableSize=1000;
+    const int tableSize=1000000;
     int numWords=atoi(argv[2]);
     string path=argv[1];
     int threshold=atoi(argv[3]);
@@ -53,6 +53,7 @@ int main(int argc, char* argv[]){
                             cout << *j ;
                             chunk+=*j;
                         }
+                        cout << "   " << k;
                         int index=distance(files.begin(),i);
                         table.add(index,k);
                         cout << endl;
@@ -75,6 +76,7 @@ int main(int argc, char* argv[]){
         }
 
     }
+    table.tally(files, threshold);
     return 0;
 }
 
@@ -115,9 +117,10 @@ int key(vector<string> chunk, int tableSize){
     for(std::vector<string>:: iterator i=chunk.begin();i!=chunk.end();i++){
         characters+=*i;
     }
+
     long int key=0;
     for(int long i=0;i<characters.size();i++){
-       key+=(characters[i]);
+       key+=(characters[characters.size()-i-1])*29^i;
     }
     return key%tableSize;
 }
