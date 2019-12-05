@@ -56,7 +56,7 @@ public:
     HashTable(){
         table= new vector<int>[1000000];
     }
-    void add(int index, int key){
+    void add(int index, int key){   // checks if chunk ID matches existing chunks in hash table(?)
         bool notFound=true;
         for(std::vector<int>::iterator i= table[key].begin();i!=table[key].end();i++){
             if(*i==index){
