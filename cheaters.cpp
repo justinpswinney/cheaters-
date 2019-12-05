@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include "cheaters.h"
 #include <functional>
+#include <math.h>
 
 
 
@@ -15,21 +16,22 @@ using namespace std;
 
 int getFileNames(vector<string> &files);
 
-int key(vector<string> chunk, int tableSize);
+int key(vector<string> chunk, double tableSize);
 
 int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
     HashTable table;
-    const int tableSize=1000000;
+    const double tableSize=1000000;
     int numWords=atoi(argv[2]);
     string path=argv[1];
     int threshold=atoi(argv[3]);
     string place;
     for(std::vector<string>::iterator i=files.begin();i!=files.end();i++){
-        cout << *i << endl;
+        cout << "Running.." <<endl;
+        //cout << *i << endl;
         place=path+"/"+*i;
-        cout << place << endl;
+        //cout << place << endl;
         if((*i!=".")&&(*i!="..")) {
             ifstream myfile(place.c_str());
             vector<string> queue;
@@ -50,29 +52,29 @@ int main(int argc, char* argv[]){
                         int k=key(queue, tableSize);
                         string chunk;
                         for (std::vector<string>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
-                            cout << *j ;
+                            //cout << *j ;
                             chunk+=*j;
                         }
-                        cout << "   " << k;
+                        //cout << "   " << k;
                         int index=distance(files.begin(),i);
                         table.add(index,k);
-                        cout << endl;
+                        //cout << endl;
                         // Currently reads before push, last queue of file isn't outputted til outside brackets
                         queue.erase(queue.begin());
                         queue.push_back(word);
                     }
                 }
                 for (std::vector<string>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
-                    cout << *j ;
+                    //cout << *j ;
                 }
-                cout << endl << "-----------------------------------------------------------------------------------------" << endl;
+                //cout << endl << "-----------------------------------------------------------------------------------------" << endl;
                 myfile.close();
             }else {
-                cout << "UNABLE TO OPEN FILE" << endl;
+                //cout << "UNABLE TO OPEN FILE" << endl;
             }
 
         }else{
-            cout << "INVALID FILE NAME" << endl;
+            //cout << "INVALID FILE NAME" << endl;
         }
 
     }
@@ -88,7 +90,7 @@ int getdir (string dir, vector<string> &files)
     DIR *dp;
     struct dirent *dirp;
     if((dp  = opendir(dir.c_str())) == NULL) {
-        cout << "Error(" << errno << ") opening " << dir << endl;
+        //cout << "Error(" << errno << ") opening " << dir << endl;
         return errno;
     }
 
@@ -107,20 +109,21 @@ int getFileNames(vector<string> &files)
     getdir(dir,files);
 
     for (unsigned int i = 0;i < files.size();i++) {
-        cout << i << files[i] << endl;
+        //cout << i << files[i] << endl;
     }
     return 0;
 }
 
-int key(vector<string> chunk, int tableSize){
+int key(vector<string> chunk, double tableSize){
     string characters;
     for(std::vector<string>:: iterator i=chunk.begin();i!=chunk.end();i++){
         characters+=*i;
     }
 
-    long int key=0;
-    for(int long i=0;i<characters.size();i++){
-       key+=(characters[characters.size()-i-1])*29^i;
+    double key=0;
+    for(int i=0;i<characters.size();i++){
+       key+=((characters[characters.size()-i-1])*(11^i));
     }
-    return key%tableSize;
+
+    return fmod(key,tableSize);
 }

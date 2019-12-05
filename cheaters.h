@@ -91,6 +91,7 @@ public:
                 }
             }
         }
+        cout <<  endl;
         vector<Caught> cheatersSorted;
             for(std::vector<Caught>::iterator i=cheaters.begin();i!=cheaters.end();i++){
                 for(std::vector<Caught>::iterator j=i+1;j!=cheaters.end();j++){
