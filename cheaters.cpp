@@ -26,11 +26,11 @@ int main(int argc, char* argv[]){
     vector<string> files;
     getFileNames(files);
     HashTable table;                    // hash table to store matching phrases of words
-    const double tableSize=1000000;     // maximum number of.....
+    const double tableSize=1000000;     // maximum number of.....-the table size is the size of the hash table memory
     int numWords=atoi(argv[2]);         // size of number of words per chunk
     string path=argv[1];                // path of files to scan
     int threshold=atoi(argv[3]);        // number of matches to count as cheating
-    string place;                       // ???
+    string place;                       // ??? -place holds the full path from the current directory to the directory of files
     for(std::vector<string>::iterator i=files.begin();i!=files.end();i++){ // cycles through all the text files in vector
         cout << "Running.." <<endl;
         //cout << *i << endl;
@@ -53,9 +53,9 @@ int main(int argc, char* argv[]){
                     if (queue.size() < numWords) {
                         queue.push_back(word);
                     } else if(word!="") {               // if chunk is full with additional words left in file
-                        int k=key(queue, tableSize);    // makes key id for hash table(?)
+                        int k=key(queue, tableSize);    // makes key id for hash table(?)-yep its the hash function
                         string chunk;
-                        // prints out contents of chunk. idk how const_iterator works
+                        // prints out contents of chunk. idk how const_iterator works-think of it like iterating through an array
                         for (std::vector<string>::const_iterator j = queue.begin(); j != queue.end(); ++j) {
                             //cout << *j ;
                             chunk+=*j;
