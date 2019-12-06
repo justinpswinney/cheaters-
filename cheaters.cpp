@@ -1,5 +1,5 @@
 // cheaters.cpp
-// Created by: Justin Swinney (***), Victor Yip (vsy59)
+// Created by: Justin Swinney (jps3869), Victor Yip (vsy59)
 // Modified on: 12/6/19
 // Objective: Compares a set of .txt files in a directory and evaluates them for plagiarism.
 
