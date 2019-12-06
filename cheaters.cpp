@@ -49,7 +49,7 @@ int main(int argc, char* argv[]){
     int numWords=atoi(argv[2]);
     string path=argv[1];
     int threshold=atoi(argv[3]);
-    string place;
+    string place;                           // path of the target files
 
 
     // parses through all identified files in the string vector
@@ -75,6 +75,9 @@ int main(int argc, char* argv[]){
                     // only obtains ASCII alphabet characters. Word is defined by encountering white space.
                     // Characters such as [, . ? ' "] are ignored
                     while ((ch < 123) && (ch > 64) && (ch != ' ' ) ) {
+                        // converts lower-> upper case
+                        if((ch > 96))
+                            ch -=32;
                         word += ch;
                         myfile.get(ch);
                     }
