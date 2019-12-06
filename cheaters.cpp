@@ -14,13 +14,14 @@
 
 using namespace std;
 
-int getFileNames(vector<string> &files);
+int getFileNames(vector<string> &files, string directory);
 
 int key(vector<string> chunk, double tableSize);
 
 int main(int argc, char* argv[]){
     vector<string> files;
-    getFileNames(files);
+    string directory=argv[1];
+    getFileNames(files,directory);
     HashTable table;
     const double tableSize=1000000;
     int numWords=atoi(argv[2]);
@@ -85,9 +86,9 @@ int getdir (string dir, vector<string> &files)
     return 0;
 }
 
-int getFileNames(vector<string> &files)
+int getFileNames(vector<string> &files, string directory)
 {
-    string dir = string("sm_doc_set");
+    string dir = directory;
     files = vector<string>();
 
     getdir(dir,files);
