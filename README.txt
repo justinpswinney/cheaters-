@@ -18,4 +18,7 @@ program arguments:
 3: a positive integer number of how many chunk matches
 	you want to consider possibly plagiarism.
 
-Notes: It is very important to type the full path to the location where your text files are.
+Notes: 
+It is very important to type the full path to the location where your text files are.
+
+ONLY ANSI TEXT FILES WILL WORK WITH THIS PROGRAM!!!
