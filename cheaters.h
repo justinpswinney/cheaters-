@@ -56,7 +56,7 @@ public:
     HashTable(){
         table= new vector<int>[1000000];
     }
-    void add(int index, int key){   // checks if chunk ID matches existing chunks in hash table(?)
+    void add(int index, int key){
         bool notFound=true;
         for(std::vector<int>::iterator i= table[key].begin();i!=table[key].end();i++){
             if(*i==index){
@@ -85,7 +85,6 @@ public:
         for(int i=0;i<files.size();i++){
             for(int j=i;j<files.size();j++){
                 if((collisions[i][j]+collisions[j][i]>threshold)&&(i!=j)){
-                    //cout << files[i] << " " << files[j] << " " << collisions[i][j]+collisions[j][i] << endl;
                     Caught writers(collisions[i][j]+collisions[j][i], files[i], files[j]);
                     cheaters.push_back(writers);
                 }
